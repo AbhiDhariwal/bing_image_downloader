@@ -18,7 +18,7 @@ pip install bing-image-downloader
 
 or 
 ```bash
-git clone https://github.com/gurugaurav/bing_image_downloader
+git clone https://github.com/AbhiDhariwal/bing_image_downloader
 cd bing_image_downloader
 pip install .
 ```
@@ -28,7 +28,7 @@ pip install .
 ### Usage <br />
 ```python
 from bing_image_downloader import downloader
-downloader.download(query_string, limit=100,  output_dir='dataset', adult_filter_off=True, force_replace=False, timeout=60)
+downloader.download(query_string, limit=100,  output_dir='dataset', adult_filter_off=True, force_replace=False, timeout=60, visited_urls = {}, return_visited_url = False)
 ```
 
 `query_string` : String to be searched.<br />
@@ -37,9 +37,12 @@ downloader.download(query_string, limit=100,  output_dir='dataset', adult_filter
 `adult_filter_off` : (optional, default is True) Enable of disable adult filteration.<br />
 `force_replace` : (optional, default is False) Delete folder if present and start a fresh download.<br />
 `timeout` : (optional, default is 60) timeout for connection in seconds.<br />
+`visited_urls` : (optional, default is { }) visited urls Dict.<br />
+`return_visited_url` : (optional, default is False) return Dict of visited urls (can be used when searching same query with new limit size or similar query.<br />
 
 
-
+### Updated Version of <br />
+https://github.com/gurugaurav/bing_image_downloader
 
 
 ### PyPi <br />
