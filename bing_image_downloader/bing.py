@@ -14,12 +14,14 @@ Author: Guru Prasad (g.gaurav541@gmail.com)
 
 
 class Bing:
-    def __init__(self, query, limit, output_dir, adult, timeout, filters=''):
+    def __init__(self, query, limit, output_dir, adult, timeout, visited_urls, filters=''):
         self.download_count = 0
         self.query = query
         self.output_dir = output_dir
         self.adult = adult
         self.filters = filters
+        self.visited_urls = visited_urls
+
 
         assert type(limit) == int, "limit must be integer"
         self.limit = limit
@@ -52,9 +54,14 @@ class Bing:
             # Download the image
             print("[%] Downloading Image #{} from {}".format(self.download_count, link))
 
-            self.save_image(link, "{}/{}/{}/".format(os.getcwd(), self.output_dir, self.query) + "Image_{}.{}".format(
-                str(self.download_count), file_type))
+            self.save_image(link, "{}/{}/{}/".format(os.getcwd(), self.output_dir, self.query) + "{}_Image_{}.{}".format(
+                self.query, str(self.download_count), file_type))
             print("[%] File Downloaded !\n")
+            
+            #add visited urls to Dict
+            self.visited_urls[link] = 1
+            
+            
         except Exception as e:
             self.download_count -= 1
             print("[!] Issue getting: {}\n[!] Error:: {}".format(link, e))
@@ -76,7 +83,15 @@ class Bing:
 
             for link in links:
                 if self.download_count < self.limit:
-                    self.download_image(link)
+                    try:
+                        # if url already visited then do not download -> skip
+                        if self.visited_urls[link] == 1:
+                            print("url already visited")
+                        else:
+                            self.download_image(link)
+                    # exception will occur due to new urls will not be present in Dict so skip to the old code
+                    except Exception as e:
+                        self.download_image(link)
                 else:
                     print("\n\n[%] Done. Downloaded {} images.".format(self.download_count))
                     print("\n===============================================\n")
